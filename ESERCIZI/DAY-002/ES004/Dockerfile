@@ -8,8 +8,7 @@ COPY ./demo/pom.xml ./pom.xml
 COPY ./demo/src ./src
 
 RUN mvn clean package -DskipTests
-
-
+ 
 # Stage 2 - Runtime
 
 FROM eclipse-temurin:21-jre-alpine
