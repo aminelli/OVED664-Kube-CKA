@@ -1,7 +1,6 @@
 #!/bin/bash
 
-docker run \
-    --rm
+docker run --rm \
     -v vol-test-001:/data \
     -v $(pwd)/backup:/backup \
     alpine \
