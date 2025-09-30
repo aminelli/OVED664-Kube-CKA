@@ -5,10 +5,10 @@ mkdir -p $HOME/.kube
 chmod 0700 $HOME/.kube
 sudo chown -R $USER ~/.kube
 
-microk8s status --wait-ready
-microk8s kubectl get nodes
-microk8s kubectl get services
-microk8s kubectl get pods
+sudo microk8s status --wait-ready
+sudo microk8s kubectl get nodes
+sudo microk8s kubectl get services
+sudo microk8s kubectl get pods
 
 # mkdir -p ~/.kube
 # chmod 0700 ~/.kube
