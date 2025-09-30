@@ -1,4 +1,4 @@
 FROM scratch
-ADD oci/rootfs.tar.xz /
+ADD oci/rootfs.tar.gz /
 
 CMD ["/bin/bash"]
