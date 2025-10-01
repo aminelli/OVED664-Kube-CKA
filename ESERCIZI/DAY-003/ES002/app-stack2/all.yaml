@@ -4,6 +4,7 @@ metadata:
   labels:
     app: mysql-db
   name: mysql-db
+  namespace: poste-01
 spec:
   containers:
   - image: mysql:5.6
@@ -22,6 +23,7 @@ metadata:
   labels:
     app: mysql-service
   name: mysql-service
+  namespace: poste-01
 spec:
   ports:
   - name: mysql-port
@@ -39,6 +41,7 @@ metadata:
   labels:
     app: web-app
   name: web-app
+  namespace: poste-01
 spec:
   containers:
   - image: bmuschko/web-app:1.0.1
@@ -62,6 +65,7 @@ metadata:
   labels:
     app: web-app-service
   name: web-app-service
+  namespace: poste-01
 spec:
   ports:
   - name: web-app-port

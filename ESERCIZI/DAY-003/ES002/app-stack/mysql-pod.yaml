@@ -4,6 +4,7 @@ metadata:
   labels:
     app: mysql-db
   name: mysql-db
+  namespace: poste-01
 spec:
   containers:
   - image: mysql:5.6

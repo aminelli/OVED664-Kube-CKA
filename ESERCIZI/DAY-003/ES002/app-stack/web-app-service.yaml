@@ -4,6 +4,7 @@ metadata:
   labels:
     app: web-app-service
   name: web-app-service
+  namespace: poste-01
 spec:
   ports:
   - name: web-app-port
