@@ -4,6 +4,7 @@ metadata:
   name: nginx-deployment
   labels:
     app: nginx
+  namespace: poste-01
 spec:
   # Servizio di replica
   replicas: 3
