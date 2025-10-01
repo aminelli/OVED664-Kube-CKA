@@ -1,0 +1,73 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    app: mysql-db
+  name: mysql-db
+spec:
+  containers:
+  - image: mysql:5.6
+    name: mysql-db
+    env:
+    - name: MYSQL_ROOT_PASSWORD
+      value: password
+    ports:
+    - containerPort: 3306
+      protocol: TCP
+  restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: mysql-service
+  name: mysql-service
+spec:
+  ports:
+  - name: mysql-port
+    port: 3306
+    protocol: TCP
+    targetPort: 3306
+  selector:
+    app: mysql-db
+  type: ClusterIP
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    app: web-app
+  name: web-app
+spec:
+  containers:
+  - image: bmuschko/web-app:1.0.1
+    name: web-app
+    env:
+    - name: DB_HOST
+      value: mysql-service
+    - name: DB_USER
+      value: root
+    - name: DB_PASSWORD
+      value: password
+    ports:
+    - containerPort: 3000
+      protocol: TCP
+  restartPolicy: Always
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: web-app-service
+  name: web-app-service
+spec:
+  ports:
+  - name: web-app-port
+    port: 3000
+    protocol: TCP
+    targetPort: 3000
+  selector:
+    app: web-app
+  type: NodePort
