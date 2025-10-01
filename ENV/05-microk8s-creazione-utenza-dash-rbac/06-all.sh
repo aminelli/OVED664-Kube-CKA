@@ -14,11 +14,30 @@
 # permissions as shown in:
 # https://github.com/kubernetes/dashboard/blob/master/docs/user/access-control/creating-sample-user.md
 
+echo " CREAZIONE ACCOUNT"
 microk8s kubectl apply -f 01-service-account.yaml
+echo "==============================="
+echo "==============================="
+
+echo " CREAZIONE ROLE BINDING e ROLE e ASSOCIAZIONE UTENZA"
 microk8s kubectl apply -f 02-cluster-role-binding.yaml
+echo "==============================="
+echo "==============================="
+
+echo " GENERAZIONE TOKEN"
 source ./03-generate-token.sh
+echo "==============================="
+echo "==============================="
+
+echo " SALVIAMO IL TOKEN IN UN SECRET"
 microk8s kubectl apply -f 04-secret.yaml
+echo "==============================="
+echo "==============================="
+
+echo " TEST SECRET"
 source ./05-get-generate-token.sh
+echo "==============================="
+echo "==============================="
 
 echo ""
 
