@@ -1,6 +1,6 @@
 #!/bin/bash
 
-kubectl apply -f clusterip-deploy.yaml
+kubectl apply -f nodeport-deploy.yaml
 
 
 # DNS:
