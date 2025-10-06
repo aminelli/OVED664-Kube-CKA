@@ -13,7 +13,7 @@ kubectl apply -f clusterip-deploy.yaml
 
 # DComandi da Host:
 # kubectl get pods  -n poste-01
-# kubectl describe pod echoserver-pod  -n poste-01
+# kubectl describe pod prova-pod  -n poste-01
 # kubectl get deployments -n poste-01
 # kubectl get services -n poste-01
 # kubectl get pods -n poste-01
