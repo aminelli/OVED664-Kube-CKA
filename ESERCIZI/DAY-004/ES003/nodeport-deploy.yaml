@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+# metadati dell'oggetto deployment
+metadata:
+  name: test-deploy
+  namespace: poste-01
+  labels:
+    app: project-app
+# Specifiche del servizio di replica
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: project-app
+      env: test
+      type: service
+  # con template progettiamo il modello di pod
+  template:
+    metadata:
+      labels:
+        app: project-app
+        env: test
+        type: service
+      name: test-pod
+    # Specfiche degli n container da creare all'interno del pod
+    spec:
+      containers:
+        - name: echoserver-cnt
+          image: k8s.gcr.io/echoserver:1.10
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: test-svc
+  namespace: poste-01
+  labels:
+    app: project-app
+spec:
+  type: NodePort
+  selector:
+    app: project-app
+    env: test
+    type: service
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+      # Porta esposta dal nodo (range 30000-32767)
+      nodeport: 30080 
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: prova-pod
+  namespace: poste-01
+  labels:
+    app: project-app
+spec:
+  containers:
+  - name: test-cnt
+    image: k8s.gcr.io/echoserver:1.10
+    ports:
+      - containerPort: 8080
+        protocol: TCP
