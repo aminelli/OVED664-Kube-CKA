@@ -5,4 +5,4 @@
 # Automaticamente, kubernetes, crea la coppia chiave valore run=echoserver come label sul pod
 kubectl run echoserver --image=k8s.gcr.io/echoserver:1.10 --restart=Never --port=8080 -n poste-01
 
-
+kubectl create service clusterip echoserver --tcp 80:8080 -n poste-01
