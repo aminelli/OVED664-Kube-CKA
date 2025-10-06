@@ -8,8 +8,6 @@ metadata:
     app: project-app
 # Specifiche del servizio di replica
 spec:
-  metadata:
-    name: test-replicaset
   replicas: 3
   selector:
     matchLabels:
