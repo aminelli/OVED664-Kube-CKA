@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: webapp
+  namespace: poste-01
+spec:
+  volumes:
+  - name: logs-volume
+    emptyDir: {}
+  containers:
+  - name: webapp
+    image: nginx
+    volumeMounts:
+    - name: logs-volume
+      mountPath: /var/log/nginx
