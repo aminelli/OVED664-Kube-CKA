@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: webapp-rs
+  namespace: poste-01
+  labels:
+    app: webapp
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: webapp
+      tier: frontend
+  template:
+    metadata:
+      name: webapp
+      labels:
+        app: webapp
+        tier: frontend
+      annotations:
+        description: "Web Application Pod"
+        owner: "dev-team"
+        version: "1.0.0"
+    spec:
+      volumes:
+      - name: podinfo_volume
+        downwardAPI:
+          items:
+          - path: "labels"
+            fieldRef:
+              fieldPath: metadata.labels
+          - path: "annotations"
+            fieldRef:
+              fieldPath: metadata.annotations
+          - path: "name"
+            fieldRef:
+              fieldPath: metadata.name
+          - path: "namespace"
+            fieldRef:
+              fieldPath: metadata.namespace
+          - path: "uid"
+            fieldRef:
+              fieldPath: metadata.uid
+          - path: "nodeName"
+            fieldRef:
+              fieldPath: spec.nodeName
+          - path: "hostIP"
+            fieldRef:
+              fieldPath: status.hostIP
+          - path: "podIP"
+            fieldRef:
+              fieldPath: status.podIP
+      containers:
+      - name: webapp
+        image: nginx
+        volumeMounts:
+        - name: podinfo_volume
+          mountPath: /infokube
+
