@@ -5,10 +5,10 @@ metadata:
   namespace: poste-01
 spec:
   # Numero di completamenti in richiesti
-  completions: 3
+  # completions: 3
 
   # numero di pod che devono essere eseguiti in parallelo
-  parallelism: 4
+  parallelism: 3
 
   # numero di tentativi in caso di fallimento
   backoffLimit: 4
