@@ -8,9 +8,6 @@ spec:
   successfulJobsHistoryLimit: 5
   failedJobsHistoryLimit: 3
   template:
-    metadata:
-      labels:
-        app: pod-cronjob-test
     spec:
       containers:
       - name: cnt-do-something
