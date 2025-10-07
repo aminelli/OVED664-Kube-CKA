@@ -1,0 +1,234 @@
+---
+# Deployment per WebApp1
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app1
+  namespace: poste-01
+  labels:
+    app: app1
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: app1
+  template:
+    metadata:
+      labels:
+        app: app1
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:alpine
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: html
+          mountPath: /usr/share/nginx/html
+      volumes:
+      - name: html
+        configMap:
+          name: app1-html
+---
+# ConfigMap per WebApp1
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app1-html
+  namespace: poste-01
+data:
+  index.html: |
+    <html>
+      <head>
+        <title>Web App 1</title>
+      </head>
+      <body style="padding: 50px; text-align: center; background-color: darkred; color: white;">
+        <h1>Benvenuti in WebApp1</h1>
+        <p>Questa è la pagina di WebApp1 servita da Nginx.</p>
+      </body>
+    </html>
+---
+# Service per WebApp1
+apiVersion: v1
+kind: Service 
+metadata:
+  name: app1-service
+  namespace: poste-01
+spec:
+  selector:
+    app: app1
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+---
+# ###########################################################################
+# ###########################################################################
+# ###########################################################################
+# Deployment per WebApp2
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app2
+  namespace: poste-01
+  labels:
+    app: app2
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: app2
+  template:
+    metadata:
+      labels:
+        app: app2
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:alpine
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: html
+          mountPath: /usr/share/nginx/html
+      volumes:
+      - name: html
+        configMap:
+          name: app2-html
+---
+# ConfigMap per WebApp1
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app2-html
+  namespace: poste-01
+data:
+  index.html: |
+    <html>
+      <head>
+        <title>Web App 2</title>
+      </head>
+      <body style="padding: 50px; text-align: center; background-color: darkblue; color: white;">
+        <h1>Benvenuti in WebApp2</h1>
+        <p>Questa è la pagina di WebApp2 servita da Nginx.</p>
+      </body>
+    </html>
+---
+# Service per WebApp2
+apiVersion: v1
+kind: Service 
+metadata:
+  name: app2-service
+  namespace: poste-01
+spec:
+  selector:
+    app: app2
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+---
+# ###########################################################################
+# ###########################################################################
+# ###########################################################################
+# Deployment per WebApp3
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app3
+  namespace: poste-01
+  labels:
+    app: app3
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: app3
+  template:
+    metadata:
+      labels:
+        app: app3
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:alpine
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: html
+          mountPath: /usr/share/nginx/html
+      volumes:
+      - name: html
+        configMap:
+          name: app3-html
+---
+# ConfigMap per WebApp1
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app3-html
+  namespace: poste-01
+data:
+  index.html: |
+    <html>
+      <head>
+        <title>Web App 3</title>
+      </head>
+      <body style="padding: 50px; text-align: center; background-color: darkgreen; color: white;">
+        <h1>Benvenuti in WebApp2</h1>
+        <p>Questa è la pagina di WebApp2 servita da Nginx.</p>
+      </body>
+    </html>
+---
+# Service per WebApp2
+apiVersion: v1
+kind: Service 
+metadata:
+  name: app3-service
+  namespace: poste-01
+spec:
+  selector:
+    app: app3
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+---
+# ###########################################################################
+# ###########################################################################
+# ###########################################################################
+# Ingress Controller
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: demo-ingress
+  namespace: poste-01
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: demokube.local
+    http:
+      paths:
+      - path: /app1
+        pathType: Prefix
+        backend:
+          service:
+            name: app1-service
+            port:
+              number: 80
+      - path: /app2
+        pathType: Prefix
+        backend:
+          service:
+            name: app2-service
+            port:
+              number: 80
+      - path: /app3
+        pathType: Prefix
+        backend:
+          service:
+            name: app3-service
+            port:
+              number: 80
