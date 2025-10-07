@@ -1,0 +1,180 @@
+# Creazione Di un POD frontend
+apiVersion: v1
+Kind: Pod
+metadata:
+  name: frontend
+  namespace: poste-01
+  labels:
+    app: frontend
+    tier: web
+spec:
+  containers:
+  - name: nginx
+    image: nginx:alpine
+    ports:
+    - containerPort: 80
+---
+# Creazione Di un POD backend
+apiVersion: v1
+Kind: Pod
+metadata:
+  name: backend
+  namespace: poste-01
+  labels:
+    app: backend
+    tier: api
+spec:
+  containers:
+  - name: api
+    image: hashicorp/http-echo
+    args:
+      - "-text=Backend API"
+    ports:
+    - containerPort: 5678
+---
+# Creazione Di un POD database
+apiVersion: v1
+Kind: Pod
+metadata:
+  name: database
+  namespace: poste-01
+  labels:
+    app: database
+    tier: db
+spec:
+  containers:
+  - name: postgres
+    image: postgres:alpine
+    env:
+    - name: POSTGRES_PASSWORD
+      value: example
+    ports:
+    - containerPort: 5432
+---
+# POD di appoggio per simulare attacco
+apiVersion: v1
+Kind: Pod
+metadata:
+  name: attacker
+  namespace: poste-01
+  labels:
+    app: attacker
+spec:
+  containers: 
+  - name: attacker
+    image: busybox
+    command: [ "sh","-c","sleep 3600" ]
+---
+### REGOLE NETWORK POLICY
+
+# Regola per isolamento del database
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: db-isolation
+  namespace: poste-01
+spec:
+  podSelector:
+    matchLabels:
+      tier: db
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          tier: api
+    ports:
+    - protocol: TCP
+      port: 5432
+---
+# Regola per isolamento dello strato api backend
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: api-isolation
+  namespace: poste-01
+spec:
+  podSelector:
+    matchLabels:
+      tier: api
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          tier: web
+    ports:
+    - protocol: TCP
+      port: 5678
+
+---
+# Regola per rendere accessibile a tutti frontend
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: web-open
+  namespace: poste-01
+spec:
+  podSelector:
+    matchLabels:
+      tier: web
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - {} # questa è la regola che permetto a tutti il traffico in ingresso
+    ports:
+    - protocol: TCP
+      port: 80
+
+---
+
+# Regola per limitare i pod frontend ad accedere solo a DNS su tcp che puntano al backend
+
+apiVersion: projectcalico.org/v3
+kind: NetworkPolicy
+metadata:
+  name: general-deny
+  namespace: poste-01
+spec:
+  selector: tier == 'web'
+  types:
+  - Egress
+  egress:
+  # Peremettere l'uso dei DNS
+  - action: Allow
+    protocol: UDP
+    destination:
+      # selector: "k8s-app == 'kube-dns'"
+      ports:
+      - 53
+  - action: Allow
+    protocol: TCP
+    destination:
+      selector: tier == 'api'
+      ports:
+      - 53
+
+---
+
+apiVersion: projectcalico.org/v3
+kind: GlobalNetworkPolicy
+metadata:
+  name: default-deny
+spec:
+  selector: all()
+  types:
+  - Egress
+  egress:
+  # blocca Reti private (RFC1918)      
+  - action: Deny
+    protocol: TCP
+    destination:
+      nets:
+      - 10.0.0.0/8
+      - 192.168.0.0/16
+      - 172.16.0.0/12
+  # permetto tutto il resto
+  - action: Allow
