@@ -23,7 +23,7 @@ spec:
         version: "1.0.0"
     spec:
       volumes:
-      - name: podinfo_volume
+      - name: podinfo-volume
         downwardAPI:
           items:
           - path: "labels"
@@ -45,6 +45,6 @@ spec:
       - name: webapp
         image: nginx
         volumeMounts:
-        - name: podinfo_volume
+        - name: podinfo-volume
           mountPath: /infokube
 
