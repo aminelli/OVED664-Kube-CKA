@@ -8,14 +8,13 @@ spec:
   # completions: 3
 
   # numero di pod che devono essere eseguiti in parallelo
-  parallelism: 3
+  # parallelism: 3
 
   # numero di tentativi in caso di fallimento
-  backoffLimit: 4
+  # backoffLimit: 4
 
   template:
     metadata:
-      name: counter
       labels:
         app: job-counter
     spec:
