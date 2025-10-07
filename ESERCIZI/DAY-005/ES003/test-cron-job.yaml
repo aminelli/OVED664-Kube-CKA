@@ -4,7 +4,7 @@ metadata:
   name: cron-job-test
   namespace: poste-01
 spec:
-  schedule: "1 * * * *"
+  schedule: "* * * * *"
   successfulJobsHistoryLimit: 5
   failedJobsHistoryLimit: 3
   jobTemplate:
