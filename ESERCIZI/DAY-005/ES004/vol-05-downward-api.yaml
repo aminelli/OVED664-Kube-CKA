@@ -41,15 +41,6 @@ spec:
           - path: "uid"
             fieldRef:
               fieldPath: metadata.uid
-          - path: "nodeName"
-            fieldRef:
-              fieldPath: spec.nodeName
-          - path: "hostIP"
-            fieldRef:
-              fieldPath: status.hostIP
-          - path: "podIP"
-            fieldRef:
-              fieldPath: status.podIP
       containers:
       - name: webapp
         image: nginx
