@@ -123,8 +123,7 @@ spec:
   policyTypes:
   - Ingress
   ingress:
-  - from:
-    - {} # questa è la regola che permetto a tutti il traffico in ingresso
+  - {} # questa è la regola che permetto a tutti il traffico in ingresso
     ports:
     - protocol: TCP
       port: 80
