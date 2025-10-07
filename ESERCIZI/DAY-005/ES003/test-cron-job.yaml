@@ -1,0 +1,22 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: cron-job-test
+  namespace: poste-01
+spec:
+  schedule: "1 * * * *"
+  successfulJobsHistoryLimit: 5
+  failedJobsHistoryLimit: 3
+  template:
+    metadata:
+      labels:
+        app: pod-cronjob-test
+    spec:
+      containers:
+      - name: cnt-do-something
+        image: nginx
+        args:
+        - /bin/sh
+        - -c
+        - 'echo "Current Date: $(date)"'
+      restartPolicy: OnFailure
