@@ -129,8 +129,8 @@ spec:
 ---
 
 # Regola per limitare i pod frontend ad accedere solo a DNS su tcp che puntano al backend
-
-apiVersion: projectcalico.org/v3
+apiVersion: networking.k8s.io/v1
+# apiVersion: projectcalico.org/v3
 kind: NetworkPolicy
 metadata:
   name: general-deny
@@ -155,8 +155,8 @@ spec:
       - 53
 
 ---
-
-apiVersion: projectcalico.org/v3
+apiVersion: networking.k8s.io/v1
+# apiVersion: projectcalico.org/v3
 kind: GlobalNetworkPolicy
 metadata:
   name: default-deny
