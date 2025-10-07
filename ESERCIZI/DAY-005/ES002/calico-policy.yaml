@@ -136,7 +136,9 @@ metadata:
   name: general-deny
   namespace: poste-01
 spec:
-  selector: tier == 'web'
+  podSelector:
+    matchLabels:
+      tier: web
   types:
   - Egress
   egress:
