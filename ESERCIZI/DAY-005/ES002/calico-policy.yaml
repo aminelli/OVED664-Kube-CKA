@@ -1,6 +1,6 @@
 # Creazione Di un POD frontend
 apiVersion: v1
-Kind: Pod
+kind: Pod
 metadata:
   name: frontend
   namespace: poste-01
@@ -16,7 +16,7 @@ spec:
 ---
 # Creazione Di un POD backend
 apiVersion: v1
-Kind: Pod
+kind: Pod
 metadata:
   name: backend
   namespace: poste-01
@@ -34,7 +34,7 @@ spec:
 ---
 # Creazione Di un POD database
 apiVersion: v1
-Kind: Pod
+kind: Pod
 metadata:
   name: database
   namespace: poste-01
@@ -53,7 +53,7 @@ spec:
 ---
 # POD di appoggio per simulare attacco
 apiVersion: v1
-Kind: Pod
+kind: Pod
 metadata:
   name: attacker
   namespace: poste-01
