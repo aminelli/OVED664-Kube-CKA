@@ -155,23 +155,23 @@ spec:
       - 53
 
 ---
-# apiVersion: networking.k8s.io/v1
-apiVersion: projectcalico.org/v3
-kind: GlobalNetworkPolicy
-metadata:
-  name: default-deny
-spec:
-  selector: all()
-  types:
-  - Egress
-  egress:
-  # blocca Reti private (RFC1918)      
-  - action: Deny
-    protocol: TCP
-    destination:
-      nets:
-      - 10.0.0.0/8
-      - 192.168.0.0/16
-      - 172.16.0.0/12
-  # permetto tutto il resto
-  - action: Allow
+# # apiVersion: networking.k8s.io/v1
+# apiVersion: projectcalico.org/v3
+# kind: GlobalNetworkPolicy
+# metadata:
+#   name: default-deny
+# spec:
+#   selector: all()
+#   types:
+#   - Egress
+#   egress:
+#   # blocca Reti private (RFC1918)      
+#   - action: Deny
+#     protocol: TCP
+#     destination:
+#       nets:
+#       - 10.0.0.0/8
+#       - 192.168.0.0/16
+#       - 172.16.0.0/12
+#   # permetto tutto il resto
+#   - action: Allow
