@@ -4,10 +4,19 @@ metadata:
   name: counter
   namespace: poste-01
 spec:
+  # Numero di completamenti in richiesti
+  completions: 3
+
+  # numero di pod che devono essere eseguiti in parallelo
+  parallelism: 4
+
+  # numero di tentativi in caso di fallimento
+  backoffLimit: 4
+
   template:
     spec:
       containers:
       - name: counter
         image: busybox
-        command: ["sh", "-c", "for i in $(seq 1 10); do echo $i; sleep 10; done"]
+        command: ["sh", "-c", "for i in $(seq 1 10); do echo $i; sleep 5; done"]
       restartPolicy: Never
