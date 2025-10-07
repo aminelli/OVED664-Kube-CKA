@@ -146,7 +146,6 @@ spec:
   - action: Allow
     protocol: UDP
     destination:
-      # selector: "k8s-app == 'kube-dns'"
       ports:
       - 53
   - action: Allow
