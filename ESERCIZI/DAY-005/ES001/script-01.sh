@@ -6,6 +6,8 @@ echo "127.0.0.1 demokube.local" | sudo tee -a /etc/hosts
 echo "========================================================================"
 cat /etc/hosts
 echo "========================================================================"
+read -p "Attendere che siano stati creati tutti gli oggetti per effettuare ilt tests..."
+echo "========================================================================"
 curl http://demokube.local/app1
 echo "========================================================================"
 curl http://demokube.local/app2
