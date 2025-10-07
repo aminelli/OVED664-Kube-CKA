@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-hostpath-default
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+
+  # storageClassName: hostpath
+
+---
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: webapp
+spec:
+  containers:
+    - name: webapp
+      image: nginx
+      volumeMounts:
+        - mountPath: /test
+          name: webapp-storage 
+  volumes:
+    - name: webapp-storage
+      persistentVolumeClaim:
+        claimName: pvc-hostpath-default
